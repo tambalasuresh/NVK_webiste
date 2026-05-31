@@ -54,7 +54,7 @@ const features = [
   "Clean work guarantee",
 ];
 
-const process = [
+const bookingSteps = [
   "Share appliance issue",
   "Get confirmed visit time",
   "Approve repair estimate",
@@ -102,6 +102,59 @@ const reviews = [
 
 const whatsappNumber = "919347584923";
 const whatsappBaseUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}`;
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://nvk-webiste.vercel.app";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "NKV Enterprises",
+  alternateName: [
+    "NVK Enterprises",
+    "NVK Enterprices",
+    "NKV Enterprices",
+    "nvk enterprices",
+    "NKV Appliance Repair",
+  ],
+  url: siteUrl,
+  telephone: "+919347584923",
+  priceRange: "Rs.199 visit cost",
+  image: `${siteUrl}/opengraph-image`,
+  description:
+    "NKV Enterprises provides doorstep home appliance repair for washing machines, chimneys, ACs, microwaves, geysers, purifiers, and refrigerators.",
+  areaServed: [
+    "Hyderabad",
+    "Secunderabad",
+    "Kukatpally",
+    "Madhapur",
+    "Ameerpet",
+    "Begumpet",
+    "Gachibowli",
+  ],
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
+      opens: "10:00",
+      closes: "21:00",
+    },
+  ],
+  makesOffer: services.map((service) => ({
+    "@type": "Offer",
+    name: service.title,
+    price: "199",
+    priceCurrency: "INR",
+    description: service.detail,
+  })),
+};
 
 function getWhatsappUrl(message?: string) {
   if (!message) {
@@ -147,6 +200,11 @@ export default function Home() {
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       {toastMessage ? (
         <div className="toast" role="status" aria-live="polite">
           <span>OK</span>
@@ -183,11 +241,12 @@ export default function Home() {
 
       <section className="hero" id="home">
         <div className="heroCopy">
-          <p className="eyebrow">Premium doorstep repair</p>
-          <h1>Home appliance repair with fast visits and clear pricing.</h1>
+          <p className="eyebrow">NKV Enterprises appliance repair</p>
+          <h1>NKV Enterprises home appliance repair with fast visits and clear pricing.</h1>
           <p className="heroText">
-            Washing machine, chimney, AC, microwave, geyser, and purifier service
-            by trained technicians. Every visit starts at Rs.199.
+            Washing machine repair, chimney repair and cleaning, AC service,
+            microwave repair, geyser repair, water purifier service, and fridge
+            repair by trained technicians. Every visit starts at Rs.199.
           </p>
 
           <div className="heroActions">
@@ -237,8 +296,10 @@ export default function Home() {
             <h2>Repair support for the appliances you use every day.</h2>
           </div>
           <p>
-            Each service includes diagnosis, price confirmation, careful repair,
-            and final testing before the job is closed.
+            NKV Enterprises repairs washing machines, kitchen chimneys, ACs,
+            microwaves, geysers, water purifiers, refrigerators, and other home
+            appliances with diagnosis, price confirmation, careful repair, and
+            final testing before the job is closed.
           </p>
         </div>
 
@@ -323,7 +384,7 @@ export default function Home() {
           </div>
         </div>
         <ol className="processGrid">
-          {process.map((item, index) => (
+          {bookingSteps.map((item, index) => (
             <li key={item}>
               <span>{String(index + 1).padStart(2, "0")}</span>
               <strong>{item}</strong>
@@ -395,7 +456,7 @@ export default function Home() {
       <footer>
         <div>
           <strong>NKV Enterprises</strong>
-          <span>Professional home appliance repair service</span>
+          <span>Professional home appliance repair service in Hyderabad and Secunderabad</span>
         </div>
         <a href="tel:+919347584923">+91 93475 84923</a>
       </footer>
